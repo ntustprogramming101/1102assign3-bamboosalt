@@ -18,6 +18,7 @@ final int HEART1=1;
 final int HEART2=2;
 final int HEART3=3;
 
+
 int  heartX, heartY, BLOCK, specing;
 int lifeState, hogState;
 float hogX, hogY, soilY;
@@ -30,13 +31,15 @@ PImage stone1, stone2;
 
 
 // For debug function; DO NOT edit or remove this!
-int playerHealth = 2;
+int playerHealth = 0;
 float cameraOffsetY = 0;
 boolean debugMode = false;
 
 boolean right= false;
 boolean down= false;
 boolean left= false;
+boolean timee = false;
+
 
 
 void setup() {
@@ -104,6 +107,7 @@ void draw() {
 			image(startHovered, START_BUTTON_X, START_BUTTON_Y);
 			if(mousePressed){
 				gameState = GAME_RUN;
+         playerHealth = 2;
 				mousePressed = false;
 			}
 
@@ -124,6 +128,8 @@ void draw() {
 	    fill(253,184,19);
 	    ellipse(590,50,120,120);
 
+
+   
 		// Grass
 		fill(124, 204, 25);
 		noStroke();
@@ -262,9 +268,7 @@ void draw() {
   }
   
   //hog move
-  if(time==15.0){
-    hogState=HOG_ORI;
-  }
+ 
 
   switch(hogState){
     case HOG_ORI:
@@ -282,16 +286,21 @@ void draw() {
     time++;
     break;
     case HOG_DOWN:
-    image(hogDownImg,hogX,hogY);
-    if(soilY==-80*18){
-    hogY+=round(80.0/15.0);
-    }else{hogY+=0;
-    }
+    image(hogDownImg,hogX,hogY);  
+    if(soilY<=-80*18){
+    hogY+=round(80.0/15.0);    
     time++;
+     }else{hogY+=0;
+   soilY-=round(80.0/15.0);
+   time++;
+     } 
+       if(time==15.0){
+      time=0.0;
+     timee = false;
+     hogState=HOG_ORI;
+    }    
     break;
   }
-  
-
   //fix float
     if(time==15.0){
     hogState=HOG_ORI;
@@ -305,7 +314,13 @@ void draw() {
     }else{
       hogY=hogY-hogY%BLOCK+BLOCK;
     }
+    if(soilY%BLOCK<30){
+      soilY=soilY-soilY%BLOCK;
+    }else{
+      soilY=soilY-soilY%BLOCK+BLOCK;
     }
+    }
+   
     
 		// Health UI
 
@@ -315,6 +330,9 @@ void draw() {
     for(int i = 0; i<playerHealth; i++){
  
      image(lifeImg,heartX+i*specing ,heartY);
+    }
+    if(playerHealth==0){
+      gameState=GAME_OVER;
     }
   /* for(int heartX = 10; heartX<10+playerHealth*specing; heartX+=specing){
       image(lifeImg,heartX ,heartY);
@@ -332,8 +350,15 @@ void draw() {
 
 			image(restartHovered, START_BUTTON_X, START_BUTTON_Y);
 			if(mousePressed){
-				gameState = GAME_RUN;
+  // init hog
+     hogX=320.0;
+     hogY=80.0;
+     image(hogImg,hogX,hogY);
+     //init health
+     playerHealth=2;
+				
 				mousePressed = false;
+gameState = GAME_RUN;
 				// Remember to initialize the game here!
 			}
 		}else{
@@ -341,10 +366,7 @@ void draw() {
 			image(restartNormal, START_BUTTON_X, START_BUTTON_Y);
 
 		}
-    // init hog
-     hogX=320.0;
-     hogY=80.0;
-     image(hogImg,hogX,hogY);
+    
 		break;
 		
 	}
@@ -371,12 +393,9 @@ void keyPressed(){
   down=true;
   hogState=HOG_DOWN;
   time=0.0;
-  if(soilY==-80*18){
-    soilY-=0;}else{
-  soilY-=80;
-    }
-  }
-   
+  timee = true;
+
+ }
   break;
    case LEFT: 
 if(hogState==HOG_ORI){
@@ -413,16 +432,16 @@ void keyReleased(){
     if(key==CODED){
   switch(keyCode){
   case RIGHT:
-  if(hogState==HOG_ORI){
-  right=false;
-  hogState=HOG_ORI;
+ if(hogX>0 && hogState==HOG_ORI){
+ // right=false;
+  hogState=HOG_RIGHT;
   time=0.0;
   }
   break;
    case DOWN:
-   if(hogState==HOG_ORI){
-   down=false;
-  hogState=HOG_ORI;
+   if(hogY+BLOCK<26*BLOCK && hogState==HOG_ORI){
+  // down=false;
+  hogState=HOG_DOWN;
   time=0.0;
    }
   break;
