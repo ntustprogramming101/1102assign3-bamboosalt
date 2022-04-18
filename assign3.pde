@@ -294,7 +294,7 @@ void draw() {
    soilY-=(80.0/15.0);
    time++;
      } 
-     println("soilY:" + soilY );
+     
        if(time>15.0){
       time=0.0;
      timee = false;
