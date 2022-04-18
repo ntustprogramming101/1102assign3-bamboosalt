@@ -291,10 +291,11 @@ void draw() {
     hogY+=round(80.0/15.0);    
     time++;
      }else{hogY+=0;
-   soilY-=round(80.0/15.0);
+   soilY-=(80.0/15.0);
    time++;
      } 
-       if(time==15.0){
+     println("soilY:" + soilY );
+       if(time>15.0){
       time=0.0;
      timee = false;
      hogState=HOG_ORI;
@@ -314,11 +315,17 @@ void draw() {
     }else{
       hogY=hogY-hogY%BLOCK+BLOCK;
     }
-    if(soilY%BLOCK<30){
-      soilY=soilY-soilY%BLOCK;
-    }else{
-      soilY=soilY-soilY%BLOCK+BLOCK;
-    }
+    soilY= floor(soilY);
+    //if(soilY%BLOCK<30){
+    ////  soilY=soilY-(soilY%BLOCK);
+    //println(soilY, floor(soilY));
+    //println(soilY-(soilY%BLOCK));
+    //}else{
+    ////  soilY=soilY-soilY%BLOCK+BLOCK;
+    //println(soilY, floor(soilY));
+    //println(soilY-soilY%BLOCK+BLOCK);
+    //}
+    
     }
    
     
