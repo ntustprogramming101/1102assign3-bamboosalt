@@ -316,15 +316,7 @@ void draw() {
       hogY=hogY-hogY%BLOCK+BLOCK;
     }
     soilY= floor(soilY);
-    //if(soilY%BLOCK<30){
-    ////  soilY=soilY-(soilY%BLOCK);
-    //println(soilY, floor(soilY));
-    //println(soilY-(soilY%BLOCK));
-    //}else{
-    ////  soilY=soilY-soilY%BLOCK+BLOCK;
-    //println(soilY, floor(soilY));
-    //println(soilY-soilY%BLOCK+BLOCK);
-    //}
+
     
     }
    
